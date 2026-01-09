@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io('https://rankfight.onrender.com');
 let currentUser = '';
 let isHost = false;
 let currentLobby = '';
