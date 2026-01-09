@@ -1,29 +1,45 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="landing-page">
-    <div class="card">
-        <h2>Join the Fight</h2>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Enter your name" maxlength="12">
-        </div>
-        
-        <div class="actions">
-            <div class="action-group">
-                <h3>Create New Server</h3>
-                <button id="createBtn" class="btn primary">Create Server</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RankFight</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="../static/js/main.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RANK FIGHT</h1>
+        </header>
+        <main>
+            <div class="landing-page">
+                <div class="card">
+                    <h2>Join the Fight</h2>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter your name" maxlength="12">
+                    </div>
+                    
+                    <div class="actions">
+                        <div class="action-group">
+                            <h3>Create New Server</h3>
+                            <button id="createBtn" class="btn primary">Create Server</button>
+                        </div>
+                        
+                        <div class="divider">OR</div>
+                        
+                        <div class="action-group">
+                            <h3>Join Existing</h3>
+                            <input type="text" id="lobbyCode" placeholder="Enter Lobby Code" maxlength="4" style="text-transform: uppercase;">
+                            <button id="joinBtn" class="btn secondary">Join Server</button>
+                        </div>
+                    </div>
+                    <p id="errorMsg" class="error"></p>
+                </div>
             </div>
-            
-            <div class="divider">OR</div>
-            
-            <div class="action-group">
-                <h3>Join Existing</h3>
-                <input type="text" id="lobbyCode" placeholder="Enter Lobby Code" maxlength="4" style="text-transform: uppercase;">
-                <button id="joinBtn" class="btn secondary">Join Server</button>
-            </div>
-        </div>
-        <p id="errorMsg" class="error"></p>
+        </main>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
