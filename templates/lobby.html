@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="game-app" data-code="{{ code }}">
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div class="lobby-info">
+            <span class="label">LOBBY CODE:</span>
+            <span class="code">{{ code }}</span>
+        </div>
+        <div class="user-info">
+            <span id="currentUser"></span>
+        </div>
+    </div>
+
+    <!-- VIEW: LOBBY -->
+    <div id="view-lobby" class="game-view">
+        <div class="lobby-layout">
+            <div class="players-list-container">
+                <h3>Fighters (<span id="playerCount">0</span>)</h3>
+                <ul id="playersList" class="players-list"></ul>
+            </div>
+            
+            <div class="settings-container">
+                <h3>Competition Settings</h3>
+                <div class="setting-item">
+                    <label>Topic:</label>
+                    <span id="displayTopic">Waiting for host...</span>
+                    <input type="text" id="inputTopic" class="host-only hidden" placeholder="e.g. Best Pizza Topping">
+                </div>
+                <div class="setting-item">
+                    <label>Candidates per person:</label>
+                    <span id="displayLimit">8</span>
+                    <input type="number" id="inputLimit" class="host-only hidden" value="8" min="1" max="32" required>
+                </div>
+                
+                <div class="lobby-actions">
+                    <p id="waitingMsg">Waiting for host to start...</p>
+                    <button id="startBtn" class="btn primary host-only hidden">Start Competition</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: SUBMISSION -->
+    <div id="view-submission" class="game-view hidden">
+        <h2>Submit Candidates</h2>
+        <p class="topic-display">Topic: <span class="highlight-topic"></span></p>
+        
+        <div class="submission-area">
+            <div class="upload-zone" id="dropZone">
+                <div class="upload-content">
+                    <p>Drag & Drop Image Here</p>
+                    <p>or <span class="fake-link" onclick="document.getElementById('fileInput').click()">Browse</span></p>
+                    <p>or Paste Image (Ctrl+V)</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+                <div class="preview-container hidden" id="previewContainer">
+                    <img id="imgPreview" src="">
+                    <button class="btn-icon remove-img" onclick="clearImage()">×</button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <input type="text" id="candidateName" placeholder="Candidate Name">
+                <button id="submitCandidateBtn" class="btn primary">Submit</button>
+            </div>
+        </div>
+
+        <div class="my-candidates">
+            <h3>Your Entries (<span id="myCount">0</span> / <span id="myLimit">8</span>)</h3>
+            <ul id="myCandidatesList" class="candidates-grid"></ul>
+        </div>
+        
+        <div class="global-status">
+            <p>Total Candidates: <span id="totalCandidates">0</span></p>
+            <button id="finishSubmissionsBtn" class="btn primary host-only hidden">Start Voting</button>
+        </div>
+    </div>
+
+    <!-- VIEW: VOTING -->
+    <div id="view-voting" class="game-view hidden">
+        <h2 class="battle-title">Who is better?</h2>
+        <div class="battle-arena">
+            <!-- CARD A -->
+            <div class="fighter-card" id="cardA" onclick="vote('A')">
+                <div class="fighter-image">
+                    <img id="imgA" src="" alt="Contender A">
+                </div>
+                <h3 id="nameA">Name A</h3>
+            </div>
+            
+            <div class="vs-badge">VS</div>
+            
+            <!-- CARD B -->
+            <div class="fighter-card" id="cardB" onclick="vote('B')">
+                <div class="fighter-image">
+                    <img id="imgB" src="" alt="Contender B">
+                </div>
+                <h3 id="nameB">Name B</h3>
+            </div>
+        </div>
+        <div class="vote-status">
+            <p id="voteStatusMsg">Waiting for votes...</p>
+        </div>
+    </div>
+
+    <!-- VIEW: RESULTS -->
+    <div id="view-results" class="game-view hidden">
+        <h2>Round Results</h2>
+        
+        <div class="results-display">
+            <div class="result-card" id="resultA">
+                <h3 id="resNameA">Name A</h3>
+                <div class="bar-container">
+                    <div class="bar" id="barA" style="width: 50%"></div>
+                </div>
+                <p class="percentage" id="percA">50%</p>
+            </div>
+            
+            <div class="result-card" id="resultB">
+                <h3 id="resNameB">Name B</h3>
+                <div class="bar-container">
+                    <div class="bar" id="barB" style="width: 50%"></div>
+                </div>
+                <p class="percentage" id="percB">50%</p>
+            </div>
+        </div>
+
+        <div class="winner-announcement">
+            <h3>Winner: <span id="roundWinner" class="winner-text"></span></h3>
+        </div>
+
+        <button id="nextRoundBtn" class="btn primary host-only hidden">Next Match</button>
+    </div>
+
+    <!-- VIEW: CHAMPION -->
+    <div id="view-champion" class="game-view hidden">
+        <h1>🏆 CHAMPION 🏆</h1>
+        <div class="champion-card">
+            <img id="championImg" src="">
+            <h2 id="championName"></h2>
+        </div>
+        <button onclick="location.href='/'" class="btn secondary">Back to Home</button>
+    </div>
+</div>
+{% endblock %}
