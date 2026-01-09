@@ -3,11 +3,15 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 import random
 import string
 import math
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+# Use environment variable for SECRET_KEY in production, fallback to default for development
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret!')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16MB max upload
-socketio = SocketIO(app, max_http_buffer_size=1e8) # Increase buffer for images
+socketio = SocketIO(app, 
+                    max_http_buffer_size=1e8,  # Increase buffer for images
+                    cors_allowed_origins="*")  # Configure CORS for production
 
 lobbies = {}
 
