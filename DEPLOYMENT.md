@@ -4,9 +4,11 @@ This guide explains how to deploy your RankFight application at production scale
 
 ## Prerequisites
 
-- Python 3.7 or higher
+- **Python 3.11** (required - eventlet is not compatible with Python 3.12+)
 - pip package manager
 - A production server (Linux/Unix recommended)
+
+⚠️ **Important**: This application uses `eventlet` for WebSocket support, which requires Python 3.11 or earlier. Python 3.12+ removed the `distutils` module that eventlet depends on.
 
 ## Installation
 
@@ -80,7 +82,32 @@ gunicorn --worker-class eventlet -w 1 \
 
 ## Production Deployment Options
 
-### Option 1: Systemd Service (Linux)
+### Option 1: Render.com (Easiest)
+
+Render automatically detects the `runtime.txt` file to use the correct Python version.
+
+1. **Push your code to GitHub** (including `runtime.txt`):
+   ```bash
+   git add runtime.txt DEPLOYMENT.md
+   git commit -m "Add Python 3.11 runtime specification for Render"
+   git push
+   ```
+
+2. **Create a new Web Service on Render**:
+   - Connect your GitHub repository
+   - Render will automatically detect your Python app
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:8000 wsgi:app`
+
+3. **Set Environment Variables** in Render Dashboard:
+   - `SECRET_KEY`: Generate a secure random key
+   - Any other environment variables from `.env.example`
+
+4. **Deploy**: Render will automatically deploy when you push to your repository
+
+⚠️ **Note**: The `runtime.txt` file specifies Python 3.11.9, which is required for eventlet compatibility.
+
+### Option 2: Systemd Service (Linux)
 
 Create a systemd service file at `/etc/systemd/system/rankfight.service`:
 
